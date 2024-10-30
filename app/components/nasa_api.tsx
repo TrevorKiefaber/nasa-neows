@@ -58,7 +58,7 @@ export default function GetData(startDate: string | null, endDate: string | null
     // Filter the data using the textSearch
     let filteredResults = _.filter(results, function(res: any){
         if(textSearch){
-            if(res.name.includes(textSearch)){
+            if(res.name.toLowerCase().includes(textSearch.toLowerCase())){
                 return true;
             }else{
                 return false;
