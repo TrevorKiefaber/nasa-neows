@@ -2,9 +2,9 @@
 'use client'
 const _ = require('underscore');
 const moment = require('moment');
-import { useState, useEffect, AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function GetData(startDate: string | null, endDate: string | null){
+export default function GetData(startDate: string | null, endDate: string | null, textSearch: string | null){
     const [data, setData] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('datetime');
@@ -55,9 +55,21 @@ export default function GetData(startDate: string | null, endDate: string | null
         results = results.concat(formatted);
     });
 
+    // Filter the data using the textSearch
+    let filteredResults = _.filter(results, function(res: any){
+        if(textSearch){
+            if(res.name.includes(textSearch)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return true;
+        }
+    })
+
     // Sort the data
-    // let sortedResults = _.sortBy(results, function(res){ return res[sortField] });
-    let sortedResults = _.sortBy(results, sortField);
+    let sortedResults = _.sortBy(filteredResults, sortField);
     if(sortOrder) { sortedResults.reverse(); }
 
     // Return the data as a table
@@ -77,7 +89,7 @@ export default function GetData(startDate: string | null, endDate: string | null
                 </tr>
             </thead>
             <tbody key="table_body">
-                {sortedResults.map((row: { id: boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<AwaitedReactNode> | Key | null | undefined; name: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; diam: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; hazard: any; sentry: any; velocity: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; miss_dist: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; magnitude: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; readable_datetime: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; }) => {
+                {sortedResults.map((row: { id: string; name: string; diam: number; hazard: boolean; sentry: boolean; velocity: string; miss_dist: string; magnitude: number; readable_datetime: string; }) => {
                     return (
                         <tr key={row.id}>
                             <td>{row.id}</td>
