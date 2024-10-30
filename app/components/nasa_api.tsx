@@ -48,7 +48,7 @@ export default function GetData(startDate: string | null, endDate: string | null
                 velocity: parseFloat(neo.close_approach_data[0].relative_velocity.kilometers_per_hour),
                 miss_dist: parseFloat(neo.close_approach_data[0].miss_distance.kilometers),
                 magnitude: parseFloat(neo.absolute_magnitude_h),
-                datetime: moment(neo.close_approach_data[0].close_approach_date_full),
+                datetime: moment(neo.close_approach_data[0].close_approach_date_full, 'YYYY-MMM-DD HH:mm'),
                 readable_datetime: neo.close_approach_data[0].close_approach_date_full
             }
         });
