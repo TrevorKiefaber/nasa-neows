@@ -45,9 +45,9 @@ export default function GetData(startDate: string | null, endDate: string | null
                 diam: avg_diam,
                 hazard: neo.is_potentially_hazardous_asteroid,
                 sentry: neo.is_sentry_object,
-                velocity: neo.close_approach_data[0].relative_velocity.kilometers_per_hour,
-                miss_dist: neo.close_approach_data[0].miss_distance.kilometers,
-                magnitude: neo.absolute_magnitude_h,
+                velocity: parseFloat(neo.close_approach_data[0].relative_velocity.kilometers_per_hour),
+                miss_dist: parseFloat(neo.close_approach_data[0].miss_distance.kilometers),
+                magnitude: parseFloat(neo.absolute_magnitude_h),
                 datetime: moment(neo.close_approach_data[0].close_approach_date_full),
                 readable_datetime: neo.close_approach_data[0].close_approach_date_full
             }
@@ -84,7 +84,7 @@ export default function GetData(startDate: string | null, endDate: string | null
                     <th onClick={() => handleSortChange('sentry')}>Is Sentry Object</th>
                     <th onClick={() => handleSortChange('velocity')}>Velocity (km/h)</th>
                     <th onClick={() => handleSortChange('miss_dist')}>Miss Distance (km)</th>
-                    <th onClick={() => handleSortChange('magnitude')}>Visual Magnituded</th>
+                    <th onClick={() => handleSortChange('magnitude')}>Visual Magnitude</th>
                     <th onClick={() => handleSortChange('datetime')}>Close Approach Datetime</th>
                 </tr>
             </thead>
