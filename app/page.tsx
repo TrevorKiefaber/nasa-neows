@@ -1,39 +1,27 @@
+'use client'
+ 
+import { useSearchParams } from 'next/navigation'
 import nasa_api from './components/nasa_api';
+import './styles.css';
 
-export default async function Page() {
-    const data = await nasa_api("2024-10-28", "2024-10-29");
-    return (
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Estimated Diameter (m)</th>
-                    <th>Is Hazardous</th>
-                    <th>Is Sentry Object</th>
-                    <th>Velocity (km/h)</th>
-                    <th>Miss Distance (km)</th>
-                    <th>Visual Magnituded</th>
-                    <th>Close Approach Datetime</th>
-                </tr>
-            </thead>
-            <tbody key="table_body">
-                {data.map((neo) => {
-                    return (
-                        <tr>
-                            <td>{neo.id}</td>
-                            <td>{neo.name}</td>
-                            <td>{neo.diam}</td>
-                            <td>{neo.hazard ? "Yes" : "No"}</td>
-                            <td>{neo.sentry ? "Yes" : "No"}</td>
-                            <td>{neo.velocity}</td>
-                            <td>{neo.miss_dist}</td>
-                            <td>{neo.visual_mag}</td>
-                            <td>{neo.close_approach_time}</td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        </table>
-    )
+export default function Page() {
+    const searchParams = useSearchParams()
+    const start = searchParams.get('start_date');
+    const end = searchParams.get('end_date');
+    const nasa_results = nasa_api(start, end);
+    return (<>
+        <form>
+            <label>
+                Start Date:
+                <input name="start_date" type="date" />
+            </label>
+            <label>
+                End Date:
+                <input name="end_date" type="date" />
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+        {nasa_results}
+    </>)
+
 }
